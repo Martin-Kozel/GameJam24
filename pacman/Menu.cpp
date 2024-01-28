@@ -1,4 +1,5 @@
 #include "Menu.h"
+using namespace std;
 
 #include <iostream>
 
@@ -8,18 +9,18 @@
 void Menu::initialise(sf::Font& t_font)
 {
 	m_font = t_font;
-	int textDropOffset = 23.0f;
+	int textDropOffset = 100.0f;
 	std::string menuTexts[] = { "Play" , "Help", "Quit" };
 	sf::Vector2u textureSize;
 	if (!m_buttonTexture.loadFromFile("ASSETS\\IMAGES\\button.png"))
 	{
-		std::cout << "problenm with button" << std::endl;
+		std::cout << "problem with button" << std::endl;
 	}
 	m_buttonSprite.setTexture(m_buttonTexture);
 	textureSize = m_buttonTexture.getSize();
 	float scaleX = BUTTON_WIDTH / textureSize.x;
 	float scaleY = BUTTON_HEIGHT / textureSize.y;
-	m_buttonSprite.setScale(scaleX, scaleY);
+	m_buttonSprite.setScale(scaleX*3, scaleY*3);
 	for (int i = 0; i < MENU_OPTIONS; i++)
 	{
 		m_buttonLocations[i] = sf::Vector2f{ BUTTON_LEFT, TOP_OFFSET + (GAP + BUTTON_HEIGHT) * i };
@@ -29,7 +30,7 @@ void Menu::initialise(sf::Font& t_font)
 		m_buttonTexts[i].setString(menuTexts[i]);
 		sf::FloatRect box = m_buttonTexts[i].getLocalBounds();
 		float offset = (BUTTON_WIDTH - box.width) / 2.0f;
-		m_buttonTexts[i].setPosition(BUTTON_LEFT + offset, TOP_OFFSET + textDropOffset + (GAP + BUTTON_HEIGHT) * i);
+		m_buttonTexts[i].setPosition(BUTTON_LEFT*1.9 + offset, TOP_OFFSET + textDropOffset + (GAP + BUTTON_HEIGHT) * i);
 
 	}
 
@@ -56,6 +57,11 @@ void Menu::processEvents(sf::Event t_event)
 	{
 		mouse.x = t_event.mouseButton.x;
 		mouse.y = t_event.mouseButton.y;
+		/*if (m_buttonSprite.getGlobalBounds().contains(sf::Vector2f(mouse)))
+		{
+			cout <<"button"<<endl;
+		}*/
+
 		if (mouse.x > BUTTON_LEFT && mouse.x < BUTTON_LEFT + BUTTON_WIDTH)
 		{
 			if (mouse.y > TOP_OFFSET && mouse.y < TOP_OFFSET + BUTTON_HEIGHT)
@@ -72,6 +78,7 @@ void Menu::processEvents(sf::Event t_event)
 			{
 				Game::m_exitGame = true;
 			}
+			
 		}
 
 	}

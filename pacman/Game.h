@@ -18,6 +18,9 @@ const int HEIGHT = 600;
 #include "Menu.h"
 #include "Help.h"
 #include "GamePlay.h"
+#include "Bedroom.h"
+#include "EndScreen.h"
+#include "LivingRoom.h"
 
 
 
@@ -60,6 +63,9 @@ private:
 	Menu m_menu;
 	Help m_help;
 	GamePlay m_gameplay;
+	LivingRoom m_livingroom;
+	BedRoom m_bedroom;
+	EndScreen m_endscreen;
 };
 
 #endif // !GAME_HPP

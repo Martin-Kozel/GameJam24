@@ -7,7 +7,7 @@ void Help::initialise(sf::Font& t_font)
 	m_message.setFont(m_font);
 	m_message.setFillColor(sf::Color::White);
 	m_message.setCharacterSize(24U);
-	m_message.setString("Use arrow keys to move\nMario Left or right\n<UpArrow> to jump\nMove off stage to finish.\n\n<esc> to return.");
+	m_message.setString("Use arrow keys or WASD to move\n<esc> to return.");
 
 	sf::FloatRect box = m_message.getLocalBounds();
 	float posX = (WIDTH - box.width) / 2.0f;

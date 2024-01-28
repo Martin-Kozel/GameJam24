@@ -1,21 +1,11 @@
-/// <summary>
-/// @author Martin Kozel and Monika Nusi
-/// @date Mar 2023
-///
-/// you need to change the above lines or lose marks
-/// </summary>
 #include "Game.h"
 #include "GamePlay.h"
 #include <iostream>
 
 GameMode Game::s_currentMode = GameMode::Licence;
 bool Game::m_exitGame{ false }; // when true exit game
-/// <summary>
-/// default constructor
-/// setup the window properties
-/// load and setup the text 
-/// load and setup the image
-/// </summary>
+
+
 Game::Game() :
 	m_window{ sf::VideoMode{ 1400U, 1000U, 32U }, "SFML Game" }
 {
@@ -25,23 +15,16 @@ Game::Game() :
 	m_menu.initialise(m_gameFont);
 	m_help.initialise(m_gameFont);
 	m_gameplay.setFont(m_gameFont);
+	m_livingroom.setFont(m_gameFont);
+	m_bedroom.setFont(m_gameFont);
 	
 }
 
-/// <summary>
-/// default destructor we didn't dynamically allocate anything
-/// so we don't need to free it, but mthod needs to be here
-/// </summary>
+
 Game::~Game()
 {
 }
-/// <summary>
-/// main game loop
-/// update 60 times per second,
-/// process update as often as possible and at least 60 times per second
-/// draw as often as possible but only updates are on time
-/// if updates run slow then don't render frames
-/// </summary>
+
 void Game::run()
 {
 	sf::Clock clock;
@@ -61,11 +44,7 @@ void Game::run()
 		render(); // as many as possible
 	}
 }
-/// <summary>
-/// handle user and system events/ input
-/// get key presses/ mouse moves etc. from OS
-/// and user :: Don't do game update here
-/// </summary>
+
 void Game::processEvents()
 {
 	sf::Event newEvent;
@@ -95,15 +74,21 @@ void Game::processEvents()
 			break;
 		case GameMode::Pause:
 			break;
+		case GameMode::LivingRoom:
+			m_livingroom.processEvents(newEvent);
+			break;
+		case GameMode::Bedroom:
+			m_bedroom.processEvents(newEvent);
+			break;
+		case GameMode::EndScreen:
+			
+			break;
 		default:
 			break;
 		}
 	}
 }
-/// <summary>
-/// deal with key presses from the user
-/// </summary>
-/// <param name="t_event">key press event</param>
+
 void Game::processKeys(sf::Event t_event)
 {
 	if (sf::Keyboard::Escape == t_event.key.code)
@@ -111,10 +96,7 @@ void Game::processKeys(sf::Event t_event)
 		m_exitGame = true;
 	}
 }
-/// <summary>
-/// Update the game world
-/// </summary>
-/// <param name="t_deltaTime">time interval per frame</param>
+
 void Game::update(sf::Time t_deltaTime)
 {
 	if (m_exitGame)
@@ -140,13 +122,19 @@ void Game::update(sf::Time t_deltaTime)
 		break;
 	case GameMode::Pause:
 		break;
+	case GameMode::LivingRoom:
+		m_livingroom.update(t_deltaTime);
+		break;
+	case GameMode::Bedroom:
+		m_bedroom.update(t_deltaTime);
+		break;
+	case GameMode::EndScreen:
+		break;
 	default:
 		break;
 	}
 }
-/// <summary>
-/// draw the frame and then switch buffers
-/// </summary>
+
 void Game::render()
 {
 	m_window.clear(sf::Color::Black);
@@ -171,14 +159,21 @@ void Game::render()
 		break;
 	case GameMode::Pause:
 		break;
+	case GameMode::LivingRoom:
+		m_livingroom.render(m_window);
+		break;
+	case GameMode::Bedroom:
+		m_bedroom.render(m_window);
+		break;
+	case GameMode::EndScreen:
+		m_endscreen.render(m_window);
+		break;
 	default:
 		break;
 	}
 	m_window.display();
 }
-/// <summary>
-/// load the font and setup the text message for screen
-/// </summary>
+
 void Game::setupFontAndText()
 {
 	if (!m_gameFont.loadFromFile("ASSETS\\FONTS\\ariblk.ttf"))

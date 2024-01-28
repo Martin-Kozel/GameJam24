@@ -1,7 +1,3 @@
-/// <summary>
-/// author Ian Perez Bunuel 2024
-/// you need to change the above line or lose marks
-/// </summary>
 #ifndef GAMEPLAY_HPP
 #define GAMEPLAY_HPP
 /// <summary>
@@ -13,6 +9,7 @@
 
 // Constants
 const int MAX_TARGETS = 4;
+
 
 enum class Direction
 {
@@ -44,6 +41,9 @@ public:
 	void update(sf::Time t_deltaTime);
 	void render(sf::RenderWindow& t_window);
 
+	sf::Font m_ArialBlackfont; // font used by message
+	sf::Text m_welcomeMessage; // text used for message on screen
+
 private:
 
 	void setupFontAndText();
@@ -61,18 +61,26 @@ private:
 	// Item functions
 	void setupMarbles();
 
-	// Collision
+	void setupBackground();
 
-
+	void checkCollisionsLevel1();
 	
-	sf::Font m_ArialBlackfont; // font used by message
-	sf::Text m_welcomeMessage; // text used for message on screen
+
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
+	sf::Texture playerTexture;
+	sf::Sprite playerSprite;
+	sf::Texture dogTexture;
+	sf::Sprite dogSprite;
+	sf::Texture keyTexture;
+	sf::Sprite keySprite;
+
 
 	// AI Variables
 	sf::RectangleShape enemy;
-	sf::Vector2f enemySize = { 50.0f, 50.0f };
+	sf::Vector2f enemySize = { 130.0f, 100.0f };
 
-	sf::Vector2f m_targets[MAX_TARGETS] = { {101.0f, 250.0f}, {200.0f, 250.0f}, {100.0f, 150.0f}, {100.0f, 150.0f} }; // Targets
+	sf::Vector2f m_targets[MAX_TARGETS] = { {101.0f, 600.0f}, {600.0f, 50.0f}, {50.0f, 50.0f}, {100.0f, 150.0f} }; // Targets
 	sf::Vector2f m_location = { 50.0f, 50.0f };
 	Direction m_facing = Direction::None; // Direction facing
 
@@ -88,17 +96,23 @@ private:
 	sf::Vector2f playerSpeed;
 	float m_speed{ 4.00f };
 	Direction m_direction{ Direction::None };
-	sf::Vector2f playerSize = { 40.0f, 80.0f };
+	sf::Vector2f playerSize = { 130.0f, 220.0f };
 
 
 	// marbles
 	sf::RectangleShape marbles;
 	sf::Vector2f marblesLocation;
-	sf::Vector2f marblesSize = { 35.0f, 35.0f };
+	sf::Vector2f marblesSize = { 120.0f, 70.0f };
+
+
+	sf::RectangleShape doors;
+	sf::Vector2f doorLocation;
+	sf::Vector2f doorSize{ 60.0f,220.0f };
 
 	bool takeMarbles = false;
-
-	// Views
+	
+	sf::Text gameovertext;
+	int level = 1;
 
 
 };

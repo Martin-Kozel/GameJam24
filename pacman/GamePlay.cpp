@@ -1,12 +1,8 @@
-/// <summary>
-/// @author Peter Lowe
-/// @date May 2019
-///
-/// you need to change the above lines or lose marks
-/// </summary>
-
 #include "GamePlay.h"
+#include "Game.h"
 #include <iostream>
+
+using namespace std;
 
 
 
@@ -19,9 +15,11 @@
 GamePlay::GamePlay()
 {
 	setupFontAndText(); // load font
+	setupBackground();
 	setupEnemy(); // load texture
 	setupPlayer(); // load player
 	setupMarbles(); // load marbles
+	
 }
 
 /// <summary>
@@ -65,6 +63,8 @@ void GamePlay::update(sf::Time t_deltaTime)
 	aiTargeting();
 	aiMove();
 	checkDirection();
+	checkCollisionsLevel1();
+
 
 }
 
@@ -74,10 +74,12 @@ void GamePlay::update(sf::Time t_deltaTime)
 void GamePlay::render(sf::RenderWindow& t_window)
 {
 
+	t_window.draw(backgroundSprite);
 	t_window.draw(m_welcomeMessage);
-	t_window.draw(enemy);
-	t_window.draw(player);
-	t_window.draw(marbles);
+	t_window.draw(playerSprite);
+	t_window.draw(dogSprite);
+	t_window.draw(keySprite);
+	t_window.draw(doors);
 	
 
 }
@@ -87,16 +89,6 @@ void GamePlay::render(sf::RenderWindow& t_window)
 /// </summary>
 void GamePlay::setupFontAndText()
 {
-	
-	m_welcomeMessage.setFont(m_ArialBlackfont);
-	m_welcomeMessage.setString("Get Pranked, Neighbor");
-	m_welcomeMessage.setStyle(sf::Text::Underlined | sf::Text::Italic | sf::Text::Bold);
-	m_welcomeMessage.setPosition(500.0f, 40.0f);
-	m_welcomeMessage.setCharacterSize(45U);
-	m_welcomeMessage.setOutlineColor(sf::Color::Red);
-	m_welcomeMessage.setFillColor(sf::Color::Black);
-	m_welcomeMessage.setOutlineThickness(3.0f);
-
 }
 
 /// <summary>
@@ -107,6 +99,15 @@ void GamePlay::setupEnemy()
 	enemy.setFillColor(sf::Color::Red);
 	enemy.setPosition(m_location);
 	enemy.setSize(enemySize);
+
+	if (!dogTexture.loadFromFile("ASSETS\\IMAGES\\dog.png"))
+	{
+		std::cout << "Problem loading dog" << "\n";
+	}
+	dogSprite.setTexture(dogTexture);
+	dogSprite.setPosition(m_location);
+	dogSprite.setScale(0.5f, 0.5f);
+	dogSprite.setOrigin(40.0f, 170.0f);
 }
 
 
@@ -177,11 +178,8 @@ void GamePlay::aiMove()
 			}
 		}
 	}
-
+	dogSprite.setPosition(m_location);
 }
-
-
-
 
 
 // Player /////////////////////////////
@@ -192,12 +190,14 @@ void GamePlay::checkDirection()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 		m_direction = Direction::Up; // move up
+		playerSprite.setOrigin(60.0f, 60.0f);
 		movePlayer(); // moves with character
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		m_direction = Direction::Left; // move left
+		playerSprite.setOrigin(60.0f, 60.0f);
 		movePlayer(); // moves with character
 
 	}
@@ -205,23 +205,34 @@ void GamePlay::checkDirection()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		m_direction = Direction::Down; // move down
+		playerSprite.setOrigin(60.0f, 60.0f);
 		movePlayer(); // moves with character
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		m_direction = Direction::Right; // move right
+		playerSprite.setOrigin(60.0f, 60.0f);
 		movePlayer(); // moves with character
 	}
 }
 
 // player setup
 void GamePlay::setupPlayer() {
-	player.setPosition(475.0f, 400.0f);
-	playerLocation = sf::Vector2f{ 475.0f,400.0f };
+	player.setPosition(475.0f, 780.0f);
+	playerLocation = sf::Vector2f{ 475.0f,780.0f };
 	player.setSize(playerSize);
 	player.setFillColor(sf::Color::Cyan);
-	player.setOrigin(20.0f, 20.0f);
+	
+
+	if (!playerTexture.loadFromFile("ASSETS\\IMAGES\\player.png"))
+	{
+		std::cout << "Problem loading player" << "\n";
+	}
+	playerSprite.setTexture(playerTexture);
+	playerSprite.setScale(0.4f, 0.4f);
+	playerSprite.setPosition(playerLocation);
+	playerSprite.setOrigin(60.0f, 60.0f);
 }
 
 void GamePlay::movePlayer() {
@@ -246,16 +257,18 @@ void GamePlay::movePlayer() {
 
 	playerLocation += movement;
 	player.setPosition(playerLocation);
+	playerSprite.setPosition(playerLocation);
+	
 
 	// boundry checking player
 	if (playerLocation.x <= 25) {
 		playerLocation.x = 25;
 	}
-	if (playerLocation.x >= 740) {
-		playerLocation.x = 740;
+	if (playerLocation.x >= 1270) {
+		playerLocation.x = 1270;
 	}
-	if (playerLocation.y >= 540) {
-		playerLocation.y = 540;
+	if (playerLocation.y >= 780) {
+		playerLocation.y = 780;
 	}
 	if (playerLocation.y <= 25) {
 		playerLocation.y = 25;
@@ -265,9 +278,43 @@ void GamePlay::movePlayer() {
 void GamePlay::setupMarbles()
 {
 
-	marblesLocation = sf::Vector2f{ 50.0f,50.0f };
+	marblesLocation = sf::Vector2f{ 120.0f,100.0f };
 	marbles.setPosition(marblesLocation);
 	marbles.setSize(marblesSize);
 	marbles.setFillColor(sf::Color::Yellow);
-	marbles.setOrigin(20.0f, 20.0f);
+	marbles.setOrigin(50.0f, 50.0f);
+
+	if (!keyTexture.loadFromFile("ASSETS\\IMAGES\\key.png"))
+	{
+		std::cout << "Problem loading key" << "\n";
+	}
+	keySprite.setTexture(keyTexture);
+	keySprite.setScale(0.4f, 0.4f);
+	keySprite.setPosition(marblesLocation);
+	keySprite.setOrigin(150.0f, 200.0f);
+}
+
+void GamePlay::setupBackground()
+{
+	if (!backgroundTexture.loadFromFile("ASSETS\\IMAGES\\garden.png"))
+	{
+		std::cout << "Problem loading background" << "\n";
+	}
+	backgroundSprite.setTexture(backgroundTexture);
+	backgroundSprite.setScale(10.0f, 10.0f);
+
+	doors.setPosition(1350.0f, 400.0f);
+	doorLocation = sf::Vector2f{ 475.0f,400.0f };
+	doors.setSize(doorSize);
+	doors.setFillColor(sf::Color::White);
+	
+}
+
+void GamePlay::checkCollisionsLevel1() {
+	if (player.getGlobalBounds().intersects(marbles.getGlobalBounds())) {
+		
+		Game::s_currentMode = GameMode::LivingRoom;
+		cout << "switched level" << endl;
+	}
+	
 }

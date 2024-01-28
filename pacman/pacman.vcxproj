@@ -19,19 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bedroom.cpp" />
+    <ClCompile Include="EndScreen.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="Licence.cpp" />
+    <ClCompile Include="LivingRoom.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Splash.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bedroom.h" />
+    <ClInclude Include="EndScreen.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="Licence.h" />
+    <ClInclude Include="LivingRoom.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Splash.h" />
   </ItemGroup>

@@ -25,7 +25,7 @@ private:
 	const float BUTTON_WIDTH = 250.0f;// width of buttons
 	const float BUTTON_LEFT = (800 - BUTTON_WIDTH) / 2.0f;// top left of button area
 	const float TOP_OFFSET = 150.0f;// top offset to button area
-	const float GAP = 50.0f;	// gap between buttons
+	const float GAP = 170.0f;	// gap between buttons
 	const float BUTTON_HEIGHT = 70.0f;// height of button
 
 };

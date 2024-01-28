@@ -13,10 +13,9 @@ public:
 private:
 	sf::Font m_font; // local refrence to game font
 	sf::Text m_message; // user prompt
+	sf::Text m_message2;
 	sf::Texture m_wallPaperTexture; // wallpaper image
 	sf::Sprite m_wallPaperSprite; // wallpaperSprite
-
-
 };
 
 #endif // !SPLASHSCREEN_H
